@@ -20,10 +20,9 @@ public class EnemyMovement : MonoBehaviour
 
     void Start()
     {
-        originalPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        Debug.Log("original " + gameObject.transform.position.x + "y="+gameObject.name + gameObject.transform.position.y);
-        targetposition = new Vector2(rotationCenter.position.x + 0.1f, rotationCenter.position.y + 0.1f);
-        Debug.Log("pozsiya"+ targetposition.x + "y="+targetposition.y);
+        originalPos = gameObject.transform.position;
+        targetposition = rotationCenter.position;
+   
     }
 
     // Update is called once per frame
@@ -34,15 +33,30 @@ public class EnemyMovement : MonoBehaviour
         {
             transform.position = Vector2.MoveTowards(transform.position, targetposition, 0.5f * Time.deltaTime);
         }
+        else
+        {
+            targetposition = rotationCenter.position;
+        }
        
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
+   /* void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.tag=="circle")
         {
-            transform.position = Vector2.MoveTowards(transform.position, originalPos, 0.5f * Time.deltaTime);
+            Debug.Log("deydi");
+            targetposition = originalPos;
+           // transform.position = Vector2.MoveTowards(transform.position, originalPos, 0.5f * Time.deltaTime);
         }
     }
+    */
+     void OnTriggerEnter2D(Collider2D other)
+    {
     
+        if (other.gameObject.tag == "center")
+        {
+            targetposition = originalPos;
+        }
+    }
+
 }
