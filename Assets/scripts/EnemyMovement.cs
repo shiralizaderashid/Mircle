@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -17,12 +18,15 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 originalPos;
 
     private Vector2 targetposition = Vector2.zero;
+    private float speed;
 
     void Start()
     {
         originalPos = gameObject.transform.position;
         targetposition = rotationCenter.position;
-   
+        
+
+
     }
 
     // Update is called once per frame
@@ -31,7 +35,15 @@ public class EnemyMovement : MonoBehaviour
         
         if ((Vector2)transform.position != targetposition)
         {
-            transform.position = Vector2.MoveTowards(transform.position, targetposition, 0.5f * Time.deltaTime);
+            speed = Random.Range(0.1f, 1.5f);
+           
+            transform.position = Vector2.MoveTowards(transform.position, targetposition,speed * Time.deltaTime);
+
+            if ((Vector2)transform.position==originalPos)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, transform.position, speed * Time.deltaTime);
+            }
+
         }
         else
         {
@@ -40,16 +52,6 @@ public class EnemyMovement : MonoBehaviour
        
     }
 
-   /* void OnCollisionEnter2D(Collision2D coll)
-    {
-        if (coll.gameObject.tag=="circle")
-        {
-            Debug.Log("deydi");
-            targetposition = originalPos;
-           // transform.position = Vector2.MoveTowards(transform.position, originalPos, 0.5f * Time.deltaTime);
-        }
-    }
-    */
      void OnTriggerEnter2D(Collider2D other)
     {
     
@@ -57,6 +59,9 @@ public class EnemyMovement : MonoBehaviour
         {
             targetposition = originalPos;
         }
+
+        
     }
+
 
 }
